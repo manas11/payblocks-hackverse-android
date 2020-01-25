@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.hackverse.hackverse.R
+import com.hackverse.hackverse.utils.GlideApp
 
 
 @BindingAdapter("app:image_url")
