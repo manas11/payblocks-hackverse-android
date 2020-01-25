@@ -1,5 +1,6 @@
 package com.hackverse.hackverse.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,6 +17,8 @@ class MainActivity : AppCompatActivity(),ImageSetupClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val decor = window.decorView
+        decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get<ImageSetupViewModel>(ImageSetupViewModel::class.java)
@@ -26,12 +29,16 @@ class MainActivity : AppCompatActivity(),ImageSetupClickListener {
 
 
     override fun onCameraButtonClick(view: View) {
-            Log.v("inside","on camera button click")
-
         ImagePicker.with(this)
             .crop()	    			//Crop image(Optional), Check Customization for more option
             .compress(1024)			//Final image size will be less than 1 MB(Optional)
             .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
             .start()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        viewModel?.onActivityResult(requestCode, resultCode, data)
+
     }
 }

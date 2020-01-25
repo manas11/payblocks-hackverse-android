@@ -10,7 +10,7 @@ import com.hackverse.hackverse.R
 
 @BindingAdapter("app:image_url")
 fun loadImage(view: ImageView, url: Uri?) {
-//    Log.v("inside",url.toString())
+    Log.v("inside load image",url.toString())
     if(url != null) {
         Glide.with(view)
             .load(url)
