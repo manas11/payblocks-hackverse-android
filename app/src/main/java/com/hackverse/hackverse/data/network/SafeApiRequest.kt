@@ -1,5 +1,6 @@
 package com.hackverse.hackverse.data.network
 
+import android.util.Log
 import com.hackverse.hackverse.utils.ApiException
 import org.json.JSONException
 import org.json.JSONObject
@@ -7,7 +8,10 @@ import retrofit2.Response
 
 abstract class SafeApiRequest {
     suspend fun <T : Any> apiRequest(call: suspend () -> Response<T>): T {
+        Log.v("po","po")
         val response = call.invoke()
+        Log.v("pow","pow")
+
         if (response.isSuccessful) {
             return response.body()!!
         } else {

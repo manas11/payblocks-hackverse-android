@@ -12,5 +12,7 @@ class ImageRepository(
     suspend fun imageUpload(image: MultipartBody.Part): ImageSetup {
         return apiRequest { api.imageUpload(image) }
     }
-
+    suspend fun test1(user_id: Int, image: MultipartBody.Part): ImageSetup {
+        return apiRequest { api.test1(user_id, image) }
+    }
 }

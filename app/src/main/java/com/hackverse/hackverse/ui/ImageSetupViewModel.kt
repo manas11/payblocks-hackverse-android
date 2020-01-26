@@ -39,7 +39,6 @@ class ImageSetupViewModel(
 
                 Log.v("image",image?.get().toString())
 
-
 //               File(Uri.parse("res:///" + R.drawable.ic_male_user_profile_picture).path )
 //
 //
@@ -60,21 +59,29 @@ class ImageSetupViewModel(
 //                Log.v("yu","yu")
 
 ///////////////
-                val file = File(image?.get().toString())
-                val requestFile: RequestBody =
-                    RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                val file = File(image?.get()?.path)
+//                val requestFile: RequestBody =
+//                    RequestBody.create(MediaType.parse("multipart/form-data"), file)
                 Log.v("after","request body create")
 
 // MultipartBody.Part is used to send also the actual file name
                 // MultipartBody.Part is used to send also the actual file name
-                val body =
-                    MultipartBody.Part.createFormData("image", file.getName(), requestFile)
+//                val body =
+//                    MultipartBody.Part.createFormData("image", file.getName(), requestFile)
                 ////////////////////
-                Log.v("po",body.toString())
+//                Log.v("po",body.toString())
                 Log.v("after","multi body create")
 
+                val filePart = MultipartBody.Part.createFormData(
+                    "image",
+                    file.name,
+                    RequestBody.create(MediaType.parse("image/*"), file)
+                )
+
                 val imageResponse =
-                    repository.imageUpload(body)//update this
+//                    repository.test1(2,filePart)//update this
+                    repository.imageUpload(filePart)//update this
+
                 Log.v("after", "imageupload")
 
 

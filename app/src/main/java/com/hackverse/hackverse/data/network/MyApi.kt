@@ -13,22 +13,25 @@ import retrofit2.http.*
 interface MyApi {
 
 
-//    @FormUrlEncoded
-//    @POST("user_profiles/new_profile.json")
-//    suspend fun imageUpload(
-//        @Field("image") image: String?
-//    ): Response<>
+    @Multipart
+    @POST("user_profiles/new_profile.json")
+    suspend fun test1(
+        @Part("user_id") user_id: Int?,
+        @Part image: MultipartBody.Part?
+    ): Response<ImageSetup>
+
 
     @Multipart
     @POST("identify")
     suspend fun imageUpload(
-        @Part("image") image: MultipartBody.Part?
+        @Part image: MultipartBody.Part?
     ): Response<ImageSetup>
 
 
     companion object {
         operator fun invoke(networkConnectionInterceptor: NetworkConnectionInterceptor): MyApi {
 
+            Log.v("tas","tas")
 
             val okkHttpclient = OkHttpClient.Builder()
                 .addInterceptor(networkConnectionInterceptor)
