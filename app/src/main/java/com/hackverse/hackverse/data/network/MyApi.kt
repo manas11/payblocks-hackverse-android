@@ -1,7 +1,9 @@
 package com.hackverse.hackverse.data.network
 
 import android.util.Log
-import com.hackverse.hackverse.data.network.responses.ImageSetup
+import com.hackverse.hackverse.data.network.responses.PaymentSetup
+import com.hackverse.hackverse.data.network.responses.PublicKeySetup
+import com.hackverse.hackverse.data.repository.PaymentRepository
 import com.hackverse.hackverse.utils.BASE_URL
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -12,31 +14,31 @@ import retrofit2.http.*
 
 interface MyApi {
 
-
-    @Multipart
-    @POST("user_profiles/new_profile.json")
-    suspend fun test1(
-        @Part("user_id") user_id: Int?,
-        @Part image: MultipartBody.Part?
-    ): Response<ImageSetup>
-
-
     @Multipart
     @POST("identify")
-    suspend fun imageUpload(
+    suspend fun amountTransaction(
+        @Part image: MultipartBody.Part?,
+        @Part("amount") amount: Int?,
+        @Part("private") private: String?,
+        @Part("public") public: String?
+
+    ): Response<PaymentSetup>
+
+
+
+    @Multipart
+    @POST("getpublickey")
+    suspend fun publicKey(
         @Part image: MultipartBody.Part?
-    ): Response<ImageSetup>
+    ): Response<PublicKeySetup>
+
 
 
     companion object {
         operator fun invoke(networkConnectionInterceptor: NetworkConnectionInterceptor): MyApi {
-
-            Log.v("tas","tas")
-
             val okkHttpclient = OkHttpClient.Builder()
                 .addInterceptor(networkConnectionInterceptor)
                 .build()
-            Log.v("as","as")
             return Retrofit.Builder()
                 .client(okkHttpclient)
                 .baseUrl(BASE_URL)

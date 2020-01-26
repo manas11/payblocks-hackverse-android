@@ -3,4 +3,6 @@
     <string name="please_scan_the_receiver_s_face">Please scan the receiver\'s face</string>
     <string name="amount_to_transfer">Amount to Transfer</string>
     <string name="pay">Pay</string>
+    <string name="verify_and_login">Verify And Login</string>
+    <string name="please_verify_yourself_and_login">Please Verify Yourself And Login</string>
 </resources>

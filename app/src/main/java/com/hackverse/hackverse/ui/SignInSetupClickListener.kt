@@ -2,6 +2,6 @@ package com.hackverse.hackverse.ui
 
 import android.view.View
 
-interface ImageSetupClickListener {
+interface SignInSetupClickListener {
     fun onCameraButtonClick(view: View)
 }
