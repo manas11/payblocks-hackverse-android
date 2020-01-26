@@ -1,10 +1,12 @@
 package com.hackverse.hackverse.data.network
 
 import android.util.Log
+import com.hackverse.hackverse.data.network.responses.MedicineSetup
 import com.hackverse.hackverse.data.network.responses.PaymentSetup
 import com.hackverse.hackverse.data.network.responses.PublicKeySetup
 import com.hackverse.hackverse.data.repository.PaymentRepository
 import com.hackverse.hackverse.utils.BASE_URL
+import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -24,6 +26,17 @@ interface MyApi {
 
     ): Response<PaymentSetup>
 
+
+
+    @Multipart
+    @POST("getmedicines")
+    suspend fun medicineSetup(
+        @Part image: MultipartBody.Part?,
+        @Part("amount") amount: Int?,
+        @Part("private") private: String?,
+        @Part("public") public: String?
+
+    ): Response<MedicineSetup>
 
 
     @Multipart

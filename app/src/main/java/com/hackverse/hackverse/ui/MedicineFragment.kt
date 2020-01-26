@@ -7,25 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.hackverse.hackverse.R
 import com.hackverse.hackverse.data.network.MyApi
 import com.hackverse.hackverse.data.network.NetworkConnectionInterceptor
-import com.hackverse.hackverse.data.network.responses.PublicKeySetup
-import com.hackverse.hackverse.data.repository.PublicKeyRepository
-import com.hackverse.hackverse.databinding.FragmentSigninBinding
+import com.hackverse.hackverse.data.network.responses.MedicineSetup
+import com.hackverse.hackverse.data.network.responses.PaymentSetup
+import com.hackverse.hackverse.data.repository.MedicineRepository
+import com.hackverse.hackverse.data.repository.PaymentRepository
+import com.hackverse.hackverse.databinding.FragmentAmountSetupBinding
+import com.hackverse.hackverse.databinding.FragmentMedicineBinding
 import com.hackverse.hackverse.utils.hide
 import com.hackverse.hackverse.utils.show
 import com.hackverse.hackverse.utils.toast
-import kotlinx.android.synthetic.main.fragment_signin.*
+import kotlinx.android.synthetic.main.fragment_amount_setup.*
 
-class SignInFragment: Fragment(), AuthListener, SignInSetupClickListener {
-    private var viewModel: AuthViewModel? = null
+class MedicineFragment  : Fragment(), MedicineListener, MedicineSetupClickListener {
 
+    private var viewModel: MedicineViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,68 +35,47 @@ class SignInFragment: Fragment(), AuthListener, SignInSetupClickListener {
 
         val networkConnectionInterceptor = NetworkConnectionInterceptor(activity)
         val api = MyApi(networkConnectionInterceptor)
-        val repository = PublicKeyRepository(api)
-        val factory = AuthViewModelFactory(repository,this)
+        val repository = MedicineRepository(api)
+        val factory = MedicineViewModelFactory(repository, this)
 
-        val dataBinding = DataBindingUtil.inflate<FragmentSigninBinding>(
+        val dataBinding = DataBindingUtil.inflate<FragmentMedicineBinding>(
             inflater,
-            R.layout.fragment_signin,
+            R.layout.fragment_medicine,
             container,
             false
         )
 
 
-        viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
-        dataBinding.authViewModel = viewModel
-        viewModel!!.authListener = this
+
+        viewModel = ViewModelProviders.of(this, factory).get(MedicineViewModel::class.java)
+        dataBinding.medicineViewModel = viewModel
+        viewModel!!.paymentListener = this
         viewModel!!.onCameraClickListener = this
 
         return dataBinding.root
 
-    }
 
+    }
 
     override fun onStarted() {
         progress_bar.show()
     }
 
-
-    override fun onSuccess(publicKeySetup: PublicKeySetup) {
-        progress_bar.hide()
-        Log.v("logged in",publicKeySetup.publickey)
-//
-//        if (sharedPref_logged_in.getBoolean(PREF_NAME1, false)) {
-//            val homeIntent = Intent(this, HomeActivity::class.java)
-//            startActivity(homeIntent)
-//            finish()
-//        } else {
-//            setContentView(R.layout.activity_main)
-//            setViewPager()
-//            val editor = sharedPref.edit()
-//            editor.putBoolean(PREF_NAME, true)
-//            editor.apply()
-//        }
-/////////////////// put logic of sign in variable
-
-
-
-//        context.toast("Welcome ${publicKeySetup.publickey}.")
-        //set shared preferences as false and also update public key
-
-        val intent = Intent(activity, HomeActivity::class.java)
-        startActivity(intent)
-//
-//        Intent(activity, HomeActivity::class.java).also {
-//            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            startActivity(it)
-
-    }
-
     override fun onFailure(message: String) {
         progress_bar.hide()
         context.toast(message)
-
     }
+
+    override fun onSuccess(medicineSetup: MedicineSetup) {
+        progress_bar.hide()
+        Log.v("success", medicineSetup.medicines)
+//        activity.toast("Paid successfully to " + paymentSetup.name)
+        Intent(activity, HomeActivity::class.java).also {
+            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(it)
+        }
+    }
+
     override fun onCameraButtonClick(view: View) {
 
         ImagePicker.with(this)
@@ -116,5 +96,6 @@ class SignInFragment: Fragment(), AuthListener, SignInSetupClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel?.onActivityResult(requestCode, resultCode, data)
     }
+
 
 }

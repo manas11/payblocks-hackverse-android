@@ -67,7 +67,7 @@ class PaymentSetupFragment : Fragment(), PaymentListener, PaymentSetupClickListe
         progress_bar.hide()
         Log.v("success", paymentSetup.name)
         activity.toast("Paid successfully to " + paymentSetup.name)
-        Intent(activity, MainActivity::class.java).also {
+        Intent(activity, HomeActivity::class.java).also {
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(it)
         }
