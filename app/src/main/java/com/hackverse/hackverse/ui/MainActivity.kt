@@ -50,17 +50,19 @@ class MainActivity : AppCompatActivity(),ImageSetupListener,ImageSetupClickListe
 
 
     override fun onStarted() {
-//        progress_bar.show()
+        progress_bar.show()
     }
 
     override fun onFailure(message: String) {
-//        progress_bar.hide()
+        progress_bar.hide()
         this.toast(message)
     }
 
     override fun onSuccessImageSetup(imageSetup: ImageSetup) {
-//        progress_bar.hide()
-        Log.v("success", "in activity")
+        progress_bar.hide()
+        Log.v("success", imageSetup.name)
+        this.toast("Paid successfully to " + imageSetup.name)
+
         Intent(this, MainActivity::class.java).also {
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(it)
@@ -69,9 +71,10 @@ class MainActivity : AppCompatActivity(),ImageSetupListener,ImageSetupClickListe
 
     override fun onCameraButtonClick(view: View) {
         ImagePicker.with(this)
-            .crop()	    			//Crop image(Optional), Check Customization for more option
-            .compress(1024)			//Final image size will be less than 1 MB(Optional)
-            .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+            .cameraOnly()
+            .crop(1f,1f)	    			//Crop image(Optional), Check Customization for more option
+            .compress(150)			//Final image size will be less than 1 MB(Optional)
+            .maxResultSize(512, 360)	//Final image resolution will be less than 1080 x 1080(Optional)
             .start()
     }
 

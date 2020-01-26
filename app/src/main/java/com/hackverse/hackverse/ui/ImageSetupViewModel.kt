@@ -24,7 +24,7 @@ class ImageSetupViewModel(
     ): ViewModel(
 ) {
     var image: ObservableField<Uri>? = ObservableField<Uri>()
-
+    var amount: String? = null
     var onCameraClickListener: ImageSetupClickListener? = null
     var imageSetupListener: ImageSetupListener? = null
 
